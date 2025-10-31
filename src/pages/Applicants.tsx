@@ -20,13 +20,44 @@ export default function Applicants() {
       setApplicants([
         {
           id: '1',
-          fullName: 'John Doe',
+          fullName: 'Budi Santoso',
           university: 'Universitas Indonesia',
           major: 'Teknik Informatika',
           status: 'Menunggu',
           createdAt: '2025-10-31'
         },
-        // Add more dummy data
+        {
+          id: '2',
+          fullName: 'Siti Rahayu',
+          university: 'Institut Teknologi Bandung',
+          major: 'Teknik Elektro',
+          status: 'Dalam Proses',
+          createdAt: '2025-10-30'
+        },
+        {
+          id: '3',
+          fullName: 'Ahmad Hidayat',
+          university: 'Universitas Gadjah Mada',
+          major: 'Ilmu Komputer',
+          status: 'Diterima',
+          createdAt: '2025-10-29'
+        },
+        {
+          id: '4',
+          fullName: 'Dewi Lestari',
+          university: 'Universitas Brawijaya',
+          major: 'Sistem Informasi',
+          status: 'Ditolak',
+          createdAt: '2025-10-28'
+        },
+        {
+          id: '5',
+          fullName: 'Rudi Hartono',
+          university: 'Universitas Diponegoro',
+          major: 'Teknik Komputer',
+          status: 'Menunggu',
+          createdAt: '2025-10-31'
+        }
       ])
       setLoading(false)
     }, 1000)

@@ -33,19 +33,17 @@ export default function App() {
       <div className="min-h-screen">
         <Routes>
           {/* Admin Routes */}
-          <Route path="/admin">
-            <Route path="login" element={<AdminLogin />} />
-            <Route 
-              path="dashboard" 
-              element={
-                <ProtectedRoute>
-                  <AdminLayout>
-                    <AdminDashboard />
-                  </AdminLayout>
-                </ProtectedRoute>
-              } 
-            />
-          </Route>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route 
+            path="/admin/dashboard" 
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminDashboard />
+                </AdminLayout>
+              </ProtectedRoute>
+            } 
+          />
           
           {/* Public Routes */}
           <Route path="/" element={
