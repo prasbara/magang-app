@@ -1,12 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
 import { Toaster } from './components/ui/toaster'
 import Navbar from './components/Navbar'
-import AdminLayout from './components/admin/AdminLayout'
-import Register from './pages/Register'
-import Applicants from './pages/Applicants'
-import AdminLogin from './pages/admin/Login'
-import AdminDashboard from './pages/admin/Dashboard'
-import Home from './pages/Home'
+
+// Lazy load components
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'))
+const Register = lazy(() => import('./pages/Register'))
+const Applicants = lazy(() => import('./pages/Applicants'))
+const AdminLogin = lazy(() => import('./pages/admin/Login'))
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'))
+const Home = lazy(() => import('./pages/Home'))
 
 // Protected Route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -33,14 +36,24 @@ export default function App() {
       <div className="min-h-screen">
         <Routes>
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/login" element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>}>
+              <AdminLogin />
+            </Suspense>
+          } />
           <Route 
             path="/admin/dashboard" 
             element={
               <ProtectedRoute>
-                <AdminLayout>
-                  <AdminDashboard />
-                </AdminLayout>
+                <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>}>
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                </Suspense>
               </ProtectedRoute>
             } 
           />
@@ -48,17 +61,29 @@ export default function App() {
           {/* Public Routes */}
           <Route path="/" element={
             <PublicLayout>
-              <Home />
+              <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>}>
+                <Home />
+              </Suspense>
             </PublicLayout>
           } />
           <Route path="/daftar" element={
             <PublicLayout>
-              <Register />
+              <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>}>
+                <Register />
+              </Suspense>
             </PublicLayout>
           } />
           <Route path="/peserta" element={
             <PublicLayout>
-              <Applicants />
+              <Suspense fallback={<div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>}>
+                <Applicants />
+              </Suspense>
             </PublicLayout>
           } />
         </Routes>

@@ -10,57 +10,69 @@ type Applicant = {
   createdAt: string
 }
 
+const DUMMY_DATA: Applicant[] = [
+  {
+    id: '1',
+    fullName: 'Budi Santoso',
+    university: 'Universitas Indonesia',
+    major: 'Teknik Informatika',
+    status: 'Menunggu',
+    createdAt: '2025-10-31'
+  },
+  {
+    id: '2',
+    fullName: 'Siti Rahayu',
+    university: 'Institut Teknologi Bandung',
+    major: 'Teknik Elektro',
+    status: 'Dalam Proses',
+    createdAt: '2025-10-30'
+  },
+  {
+    id: '3',
+    fullName: 'Ahmad Hidayat',
+    university: 'Universitas Gadjah Mada',
+    major: 'Ilmu Komputer',
+    status: 'Diterima',
+    createdAt: '2025-10-29'
+  },
+  {
+    id: '4',
+    fullName: 'Dewi Lestari',
+    university: 'Universitas Brawijaya',
+    major: 'Sistem Informasi',
+    status: 'Ditolak',
+    createdAt: '2025-10-28'
+  },
+  {
+    id: '5',
+    fullName: 'Rudi Hartono',
+    university: 'Universitas Diponegoro',
+    major: 'Teknik Komputer',
+    status: 'Menunggu',
+    createdAt: '2025-10-31'
+  }
+]
+
 export default function Applicants() {
   const [applicants, setApplicants] = useState<Applicant[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // TODO: Replace with actual API call
-    setTimeout(() => {
-      setApplicants([
-        {
-          id: '1',
-          fullName: 'Budi Santoso',
-          university: 'Universitas Indonesia',
-          major: 'Teknik Informatika',
-          status: 'Menunggu',
-          createdAt: '2025-10-31'
-        },
-        {
-          id: '2',
-          fullName: 'Siti Rahayu',
-          university: 'Institut Teknologi Bandung',
-          major: 'Teknik Elektro',
-          status: 'Dalam Proses',
-          createdAt: '2025-10-30'
-        },
-        {
-          id: '3',
-          fullName: 'Ahmad Hidayat',
-          university: 'Universitas Gadjah Mada',
-          major: 'Ilmu Komputer',
-          status: 'Diterima',
-          createdAt: '2025-10-29'
-        },
-        {
-          id: '4',
-          fullName: 'Dewi Lestari',
-          university: 'Universitas Brawijaya',
-          major: 'Sistem Informasi',
-          status: 'Ditolak',
-          createdAt: '2025-10-28'
-        },
-        {
-          id: '5',
-          fullName: 'Rudi Hartono',
-          university: 'Universitas Diponegoro',
-          major: 'Teknik Komputer',
-          status: 'Menunggu',
-          createdAt: '2025-10-31'
-        }
-      ])
-      setLoading(false)
-    }, 1000)
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        // TODO: Replace with actual API call when backend is ready
+        setApplicants(DUMMY_DATA)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
   }, [])
 
   const getStatusColor = (status: string) => {
@@ -78,6 +90,23 @@ export default function Applicants() {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="container mx-auto px-4">
+          <Card>
+            <CardContent>
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Memuat data...</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
@@ -86,39 +115,32 @@ export default function Applicants() {
             <CardTitle className="text-2xl">Daftar Peserta Magang</CardTitle>
           </CardHeader>
           <CardContent>
-            {loading ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="mt-4 text-gray-600">Memuat data...</p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="py-3 px-4 text-left">Nama</th>
-                      <th className="py-3 px-4 text-left">Asal Kampus</th>
-                      <th className="py-3 px-4 text-left">Program Studi</th>
-                      <th className="py-3 px-4 text-left">Status</th>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-3 px-4 text-left">Nama</th>
+                    <th className="py-3 px-4 text-left">Asal Kampus</th>
+                    <th className="py-3 px-4 text-left">Program Studi</th>
+                    <th className="py-3 px-4 text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {applicants.map((applicant) => (
+                    <tr key={applicant.id}>
+                      <td className="py-3 px-4">{applicant.fullName}</td>
+                      <td className="py-3 px-4">{applicant.university}</td>
+                      <td className="py-3 px-4">{applicant.major}</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(applicant.status)}`}>
+                          {applicant.status}
+                        </span>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {applicants.map((applicant) => (
-                      <tr key={applicant.id} className="border-b">
-                        <td className="py-3 px-4">{applicant.fullName}</td>
-                        <td className="py-3 px-4">{applicant.university}</td>
-                        <td className="py-3 px-4">{applicant.major}</td>
-                        <td className="py-3 px-4">
-                          <span className={`px-3 py-1 rounded-full text-sm ${getStatusColor(applicant.status)}`}>
-                            {applicant.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
       </div>
